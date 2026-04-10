@@ -3,13 +3,32 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 from utils import predict
-import zipfile
+import streamlit as st
+import tensorflow as tf
+import numpy as np
+from PIL import Image
+from utils import predict
+import gdown
 import os
 
-# Extract model if not already extracted
-if not os.path.exists("model/cat_dog_model.h5"):
-    with zipfile.ZipFile("model.zip", 'r') as zip_ref:
-        zip_ref.extractall()
+# -------------------------------
+# Download model from Google Drive
+# -------------------------------
+MODEL_PATH = "model/cat_dog_model.h5"
+
+if not os.path.exists(MODEL_PATH):
+    os.makedirs("model", exist_ok=True)
+    url = "https://drive.google.com/uc?id=1nbNFrN91xeUJ3L4TR_1mvyeCWfRz1CZU"
+    gdown.download(url, MODEL_PATH, quiet=False)
+
+# -------------------------------
+# Load Model
+# -------------------------------
+@st.cache_resource
+def load_model():
+    return tf.keras.models.load_model(MODEL_PATH)
+
+model = load_model()
 # -------------------------------
 # Page Config
 # -------------------------------
