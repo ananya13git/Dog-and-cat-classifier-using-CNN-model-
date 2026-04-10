@@ -3,7 +3,13 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 from utils import predict
+import zipfile
+import os
 
+# Extract model if not already extracted
+if not os.path.exists("model/cat_dog_model.h5"):
+    with zipfile.ZipFile("model.zip", 'r') as zip_ref:
+        zip_ref.extractall()
 # -------------------------------
 # Page Config
 # -------------------------------
